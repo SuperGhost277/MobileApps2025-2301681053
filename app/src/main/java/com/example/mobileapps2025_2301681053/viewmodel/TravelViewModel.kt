@@ -24,6 +24,17 @@ class TravelViewModel(private val repository: TravelRepository) : ViewModel() {
             repository.insert(newTravel)
         }
     }
+    fun update(travel: Travel) {
+        viewModelScope.launch {
+            repository.update(travel)
+        }
+    }
+
+    fun delete(travel: Travel) {
+        viewModelScope.launch {
+            repository.delete(travel)
+        }
+    }
 }
 
 // Тази "Фабрика" е задължителна в Android, когато ViewModel-ът ни

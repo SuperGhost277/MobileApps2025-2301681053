@@ -1,9 +1,11 @@
 package com.example.mobileapps2025_2301681053.model
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,4 +17,9 @@ interface TravelDao {
     // Команда за четене (Read) - Оценка 4
     @Query("SELECT * FROM travel_table ORDER BY id DESC")
     fun getAllTravels(): Flow<List<Travel>>
+    @Update
+    suspend fun update(travel: Travel)
+
+    @Delete
+    suspend fun delete(travel: Travel)
 }

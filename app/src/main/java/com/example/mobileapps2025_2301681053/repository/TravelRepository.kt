@@ -16,4 +16,11 @@ class TravelRepository(private val travelDao: TravelDao) {
     suspend fun insert(travel: Travel) {
         travelDao.insert(travel)
     }
+    suspend fun update(travel: Travel) {
+        travelDao.update(travel)
+    }
+
+    suspend fun delete(travel: Travel) {
+        travelDao.delete(travel)
+    }
 }

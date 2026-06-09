@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.mobileapps2025_2301681053.R
+import com.example.mobileapps2025_2301681053.model.Travel
 import com.example.mobileapps2025_2301681053.model.TravelDatabase
 import com.example.mobileapps2025_2301681053.repository.TravelRepository
 import com.example.mobileapps2025_2301681053.viewmodel.TravelViewModel
@@ -21,31 +22,43 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Подготовка на Базата данни, Репозиторито и ViewModel-а
         val database = TravelDatabase.getDatabase(requireContext())
         val repository = TravelRepository(database.travelDao())
         val factory = TravelViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[TravelViewModel::class.java]
 
-        // 2. Намиране на полетата и бутона от дизайна
         val editTitle = view.findViewById<EditText>(R.id.editTextTitle)
         val editNote = view.findViewById<EditText>(R.id.editTextNote)
         val buttonSave = view.findViewById<Button>(R.id.buttonSave)
 
-        // 3. Какво се случва при кликване на "Запази"
+        // ПРОМЯНАТА Е ТУК: Проверяваме дали са ни подадени данни за редакция
+        val travelId = arguments?.getInt("id", -1) ?: -1
+        val travelTitle = arguments?.getString("title") ?: ""
+        val travelNote = arguments?.getString("note") ?: ""
+
+        // Ако ID-то не е -1, значи редактираме съществуващо пътуване
+        if (travelId != -1) {
+            editTitle.setText(travelTitle)
+            editNote.setText(travelNote)
+            buttonSave.text = "Обнови пътуването"
+        }
+
         buttonSave.setOnClickListener {
             val titleText = editTitle.text.toString()
             val noteText = editNote.text.toString()
 
-            // Проверяваме дали потребителят е въвел заглавие
             if (titleText.isNotBlank()) {
-                // Пращаме данните към ViewModel-а, за да ги запише
-                viewModel.insert(titleText, noteText)
+                if (travelId == -1) {
+                    // Ако е ново, използваме старата функция insert
+                    viewModel.insert(titleText, noteText)
+                } else {
+                    // Ако редактираме, създаваме обновения обект и го пращаме към update
+                    val updatedTravel = Travel(id = travelId, title = titleText, note = noteText, imagePath = null)
+                    viewModel.update(updatedTravel)
+                }
 
-                // Връщаме се един екран назад (към списъка)
                 findNavController().navigateUp()
             } else {
-                // Показваме малко съобщение за грешка, ако полето е празно
                 Toast.makeText(requireContext(), "Моля, въведете заглавие!", Toast.LENGTH_SHORT).show()
             }
         }
