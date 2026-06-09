@@ -14,12 +14,10 @@ class TravelViewModel(private val repository: TravelRepository) : ViewModel() {
     val allTravels: Flow<List<Travel>> = repository.allTravels
 
     // Функция, която ще се извика, когато потребителят натисне бутона "Запази"
-    fun insert(title: String, note: String) {
-        // Създаваме нов обект Travel
-        val newTravel = Travel(title = title, note = note)
+    fun insert(title: String, note: String, imagePath: String?) {
+        // Вече подаваме и пътя до снимката (imagePath)
+        val newTravel = Travel(title = title, note = note, imagePath = imagePath)
 
-        // Стартираме запазването в базата данни на заден фон (чрез viewModelScope)
-        // Това гарантира, че приложението няма да забие ("замръзне"), докато записва
         viewModelScope.launch {
             repository.insert(newTravel)
         }

@@ -37,6 +37,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
                 putInt("id", clickedTravel.id)
                 putString("title", clickedTravel.title)
                 putString("note", clickedTravel.note)
+                putString("imagePath", clickedTravel.imagePath) // НОВО: Взимаме и снимката
             }
             // Отиваме на екрана за добавяне/редактиране, но носим пакета с нас
             findNavController().navigate(R.id.action_listFragment_to_addEditFragment, bundle)
