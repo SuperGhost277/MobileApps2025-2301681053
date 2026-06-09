@@ -41,6 +41,21 @@
         android:layout_marginBottom="24dp" />
 
     <Button
+        android:id="@+id/buttonLocation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Вземи текуща локация (GPS)"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Локация: Не е избрана"
+        android:textColor="#666666"
+        android:layout_marginBottom="24dp" />
+
+    <Button
         android:id="@+id/buttonSave"
         android:layout_width="match_parent"
         android:layout_height="60dp"

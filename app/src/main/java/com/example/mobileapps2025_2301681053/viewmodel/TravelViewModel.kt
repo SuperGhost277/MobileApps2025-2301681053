@@ -14,13 +14,9 @@ class TravelViewModel(private val repository: TravelRepository) : ViewModel() {
     val allTravels: Flow<List<Travel>> = repository.allTravels
 
     // Функция, която ще се извика, когато потребителят натисне бутона "Запази"
-    fun insert(title: String, note: String, imagePath: String?) {
-        // Вече подаваме и пътя до снимката (imagePath)
-        val newTravel = Travel(title = title, note = note, imagePath = imagePath)
-
-        viewModelScope.launch {
-            repository.insert(newTravel)
-        }
+    fun insert(title: String, note: String, imagePath: String?, lat: Double?, lon: Double?) {
+        val newTravel = Travel(title = title, note = note, imagePath = imagePath, latitude = lat, longitude = lon)
+        viewModelScope.launch { repository.insert(newTravel) }
     }
     fun update(travel: Travel) {
         viewModelScope.launch {
