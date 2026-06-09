@@ -64,7 +64,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
                 // Казваме на ViewModel-а да го изтрие от базата данни
                 viewModel.delete(travelToDelete)
 
-                android.widget.Toast.makeText(requireContext(), "Пътуването е изтрито!", android.widget.Toast.LENGTH_SHORT).show()
+                android.widget.Toast.makeText(requireContext(), "Journey deleted!", android.widget.Toast.LENGTH_SHORT).show()
             }
         }
         val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(swipeToDeleteCallback)

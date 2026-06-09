@@ -33,14 +33,13 @@ class TravelAdapter(private val onItemClicked: (Travel) -> Unit) : RecyclerView.
 
         // НОВО: Логика за показване на снимката
         if (currentTravel.imagePath != null) {
-            // Ако има снимка, правим ImageView видимо
-            holder.imageThumbnail.visibility = View.VISIBLE
             // Зареждаме снимката от файла
             val bitmap = BitmapFactory.decodeFile(currentTravel.imagePath)
             holder.imageThumbnail.setImageBitmap(bitmap)
         } else {
-            // Ако няма снимка, скриваме ImageView, за да не стои празно място
-            holder.imageThumbnail.visibility = View.GONE
+            // Ако няма снимка, показваме празен цвят/placeholder
+            holder.imageThumbnail.setImageBitmap(null)
+            holder.imageThumbnail.setBackgroundColor(android.graphics.Color.LTGRAY)
         }
 
         holder.itemView.setOnClickListener {

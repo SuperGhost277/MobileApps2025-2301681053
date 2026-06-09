@@ -71,7 +71,7 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
             if (isGranted) {
                 getLastLocation()
             } else {
-                Toast.makeText(requireContext(), "Разрешението за локация е отказано!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Location permission denied!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -96,7 +96,7 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
         if (travelId != -1) {
             editTitle.setText(travelTitle)
             editNote.setText(travelNote)
-            buttonSave.text = "Обнови пътуването"
+            buttonSave.text = "Update Journey"
 
             if (travelImagePath != null) {
                 currentImagePath = travelImagePath
@@ -108,7 +108,7 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
             if (travelLat != null && travelLon != null) {
                 latitude = travelLat
                 longitude = travelLon
-                textViewLocation.text = "Локация: Лат: %.4f, Лон: %.4f".format(latitude, longitude)
+                textViewLocation.text = "Location: Lat: %.4f, Lon: %.4f".format(latitude, longitude)
             }
         }
 
@@ -127,7 +127,7 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
                 }
                 findNavController().navigateUp()
             } else {
-                Toast.makeText(requireContext(), "Моля, въведете заглавие!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a title!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -139,10 +139,10 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
                 if (location != null) {
                     latitude = location.latitude
                     longitude = location.longitude
-                    textViewLocation.text = "Локация: Лат: %.4f, Лон: %.4f".format(latitude, longitude)
-                    Toast.makeText(requireContext(), "Локацията е успешно взета!", Toast.LENGTH_SHORT).show()
+                    textViewLocation.text = "Location: Lat: %.4f, Lon: %.4f".format(latitude, longitude)
+                    Toast.makeText(requireContext(), "Location successfully retrieved!", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireContext(), "Включете GPS-а на телефона!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Please turn on your GPS!", Toast.LENGTH_SHORT).show()
                 }
             }
         } catch (e: SecurityException) {
