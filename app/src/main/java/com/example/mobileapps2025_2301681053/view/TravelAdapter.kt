@@ -17,7 +17,6 @@ class TravelAdapter(private val onItemClicked: (Travel) -> Unit) : RecyclerView.
     class TravelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleText: TextView = itemView.findViewById(R.id.textTitle)
         val noteText: TextView = itemView.findViewById(R.id.textNote)
-        // НОВО: Намираме картинката
         val imageThumbnail: ImageView = itemView.findViewById(R.id.imageThumbnail)
     }
 
@@ -31,13 +30,10 @@ class TravelAdapter(private val onItemClicked: (Travel) -> Unit) : RecyclerView.
         holder.titleText.text = currentTravel.title
         holder.noteText.text = currentTravel.note
 
-        // НОВО: Логика за показване на снимката
         if (currentTravel.imagePath != null) {
-            // Зареждаме снимката от файла
             val bitmap = BitmapFactory.decodeFile(currentTravel.imagePath)
             holder.imageThumbnail.setImageBitmap(bitmap)
         } else {
-            // Ако няма снимка, показваме празен цвят/placeholder
             holder.imageThumbnail.setImageBitmap(null)
             holder.imageThumbnail.setBackgroundColor(android.graphics.Color.LTGRAY)
         }

@@ -31,7 +31,6 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
     private lateinit var viewModel: TravelViewModel
     private var currentImagePath: String? = null
 
-    // НОВО: Променливи за GPS
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latitude: Double? = null
     private var longitude: Double? = null
@@ -45,7 +44,6 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
         val factory = TravelViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[TravelViewModel::class.java]
 
-        // Инициализираме услугата за локация на Google
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val editTitle = view.findViewById<EditText>(R.id.editTextTitle)
@@ -56,7 +54,6 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
         textViewLocation = view.findViewById(R.id.textViewLocation)
         val buttonSave = view.findViewById<Button>(R.id.buttonSave)
 
-        // --- ЛОГИКА ЗА КАМЕРАТА ---
         val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
             if (bitmap != null) {
                 imageViewPhoto.setImageBitmap(bitmap)
@@ -65,8 +62,6 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
         }
         buttonCamera.setOnClickListener { takePictureLauncher.launch(null) }
 
-        // --- ЛОГИКА ЗА GPS ЛОКАЦИЯ ---
-        // Лаунчър, който пита потребителя: "Даваш ли достъп до GPS?"
         val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 getLastLocation()
@@ -76,16 +71,13 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
         }
 
         buttonLocation.setOnClickListener {
-            // Проверяваме дали вече имаме разрешение
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation()
             } else {
-                // Ако нямаме, го искаме от потребителя
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
 
-        // --- ЗАРЕЖДАНЕ ПРИ РЕДАКЦИЯ ---
         val travelId = arguments?.getInt("id", -1) ?: -1
         val travelTitle = arguments?.getString("title") ?: ""
         val travelNote = arguments?.getString("note") ?: ""
@@ -104,7 +96,6 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
                 imageViewPhoto.setImageBitmap(bitmap)
             }
 
-            // Възстановяваме координатите, ако съществуват
             if (travelLat != null && travelLon != null) {
                 latitude = travelLat
                 longitude = travelLon
@@ -112,14 +103,12 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
             }
         }
 
-        // --- ЗАПАЗВАНЕ ---
         buttonSave.setOnClickListener {
             val titleText = editTitle.text.toString()
             val noteText = editNote.text.toString()
 
             if (titleText.isNotBlank()) {
                 if (travelId == -1) {
-                    // Подаваме заглавие, бележка, снимка и GPS координати
                     viewModel.insert(titleText, noteText, currentImagePath, latitude, longitude)
                 } else {
                     val updatedTravel = Travel(id = travelId, title = titleText, note = noteText, imagePath = currentImagePath, latitude = latitude, longitude = longitude)
@@ -132,7 +121,6 @@ class AddEditFragment : Fragment(R.layout.fragment_add_edit) {
         }
     }
 
-    // Функция, която реално взима координатите от GPS чипа
     private fun getLastLocation() {
         try {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->

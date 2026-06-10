@@ -10,10 +10,8 @@ import kotlinx.coroutines.flow.Flow
 
 class TravelViewModel(private val repository: TravelRepository) : ViewModel() {
 
-    // Данните, които екранът (UI) ще наблюдава и показва
     val allTravels: Flow<List<Travel>> = repository.allTravels
 
-    // Функция, която ще се извика, когато потребителят натисне бутона "Запази"
     fun insert(title: String, note: String, imagePath: String?, lat: Double?, lon: Double?) {
         val newTravel = Travel(title = title, note = note, imagePath = imagePath, latitude = lat, longitude = lon)
         viewModelScope.launch { repository.insert(newTravel) }
@@ -31,8 +29,6 @@ class TravelViewModel(private val repository: TravelRepository) : ViewModel() {
     }
 }
 
-// Тази "Фабрика" е задължителна в Android, когато ViewModel-ът ни
-// приема параметър (в нашия случай приема TravelRepository)
 class TravelViewModelFactory(private val repository: TravelRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TravelViewModel::class.java)) {
